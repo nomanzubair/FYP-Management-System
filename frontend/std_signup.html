@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Sign Up | UE Portal</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f4f7f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .signup_container {
+        background: white;
+        width: 100%;
+        max-width: 600px;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-top: 5px solid #2e6b3e;
+      }
+
+      .header-flex {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .header-flex img {
+        height: 60px;
+        transition: transform 0.3s;
+      }
+
+      .header-flex img:hover {
+        transform: scale(1.1);
+      }
+
+      h2 {
+        color: #2e6b3e;
+        font-size: 24px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #666;
+        margin-top: -20px;
+        margin-bottom: 30px;
+        font-size: 14px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .input-box {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .full-width {
+        grid-column: span 2;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      input,
+      select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #2e6b3e;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+      }
+
+      .signup-btn {
+        flex: 2;
+        background-color: #2e6b3e;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+      }
+
+      .signup-btn:hover {
+        background-color: #1f4d2c;
+      }
+
+      .reset-btn {
+        flex: 1;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .login-link a {
+        color: #2e6b3e;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      .error-msg {
+        color: red;
+        font-size: 12px;
+        display: none;
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      /* Responsive */
+      @media (max-width: 500px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        .full-width {
+          grid-column: span 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signup_container">
+      <div class="header-flex">
+        <a href="https://ue.edu.pk/" target="_blank">
+          <img src="ue_logo.png" alt="UE Logo" />
+        </a>
+        <h2>Create Student Account</h2>
+      </div>
+
+      <p class="subtitle">Enter your details to register</p>
+
+      <form
+        action="signup.php"
+        method="post"
+        autocomplete="off"
+        onsubmit="return validatePassword();"
+      >
+        <div class="form-grid">
+          <div class="input-box">
+            <label>Student Name</label>
+            <input
+              type="text"
+              name="stdn"
+              id="stdn"
+              placeholder="Full Name"
+              required
+              onblur="capitalizeName()"
+            />
+          </div>
+
+          <div class="input-box">
+            <label>Student ID</label>
+            <input
+              type="text"
+              name="stdi"
+              id="stdi"
+              placeholder="e.g. BSF1234567"
+              required
+              pattern="BSF[0-9]{7}"
+              maxlength="10"
+              title="Format must be BSF followed by exactly 6 digits (e.g. BSF1234567)"
+              onblur="fixBSF()"
+            />
+          </div>
+
+          <div class="input-box">
+            <label>Contact Number</label>
+            <input
+              type="tel"
+              name="cnt"
+              id="cnt"
+              placeholder="03XXXXXXXXX"
+              required
+              pattern="03[0-9]{9}"
+              maxlength="11"
+              minlength="11"
+              title="Contact number must be exactly 11 digits"
+              onblur="fixNumber()"
+            />
+          </div>
+
+          <div class="input-box">
+            <label>Gmail ID</label>
+            <input
+              type="email"
+              name="stdg"
+              placeholder="example@gmail.com"
+              required
+              pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+              title="Only Gmail addresses allowed (example@gmail.com)"
+            />
+          </div>
+
+          <div class="input-box">
+            <label>Batch</label>
+            <select name="bth" required>
+              <option value="" disabled selected>Select Batch</option>
+              <option value="2022 - 2026">2022 - 2026</option>
+              <option value="2023 - 2027">2023 - 2027</option>
+              <option value="2024 - 2028">2024 - 2028</option>
+              <option value="2025 - 2029">2025 - 2029</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <label>Shift</label>
+            <select name="sft" required>
+              <option value="" disabled selected>Select Shift</option>
+              <option value="Morning">Morning</option>
+              <option value="Evening">Evening</option>
+            </select>
+          </div>
+
+          <div class="input-box full-width">
+            <label>Department</label>
+            <select name="dp" required>
+              <option value="" disabled selected>Select Department</option>
+              <option value="BS Information Technology">
+                BS Information Technology
+              </option>
+              <option value="BS Computer Science">BS Computer Science</option>
+              <option value="BS Mathematics">BS Mathematics</option>
+              <option value="BS Physics">BS Physics</option>
+              <option value="BS Chemistry">BS Chemistry</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <label>Password</label>
+            <input
+              type="password"
+              id="password"
+              name="pass"
+              placeholder="••••••••"
+              required
+              pattern="^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,12}$"
+              minlength="8"
+              maxlength="12"
+              title="Password must be 8-12 characters and contain only letters and numbers"
+            />
+          </div>
+
+          <div class="input-box">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_pass"
+              placeholder="••••••••"
+              required
+              pattern="^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,12}$"
+              minlength="8"
+              maxlength="12"
+              title="Password must be 8-12 characters and contain only letters and numbers"
+            />
+          </div>
+        </div>
+
+        <span id="passError" class="error-msg">Passwords do not match!</span>
+
+        <div class="btn-group">
+          <button type="submit" class="signup-btn">Signup Now</button>
+          <button type="reset" class="reset-btn">Reset</button>
+        </div>
+      </form>
+
+      <p class="login-link">
+        Already registered? <a href="std_login.html">Login Now</a>
+      </p>
+    </div>
+
+    <script>
+      document
+        .querySelector('input[name="stdg"]')
+        .addEventListener("input", function () {
+          if (this.value.includes("@gmail.com")) {
+            let parts = this.value.split("@gmail.com");
+            this.value = parts[0] + "@gmail.com";
+          }
+        });
+    </script>
+
+    <script>
+      function fixBSF() {
+        let input = document.getElementById("stdi");
+        let value = input.value;
+
+        if (value.length >= 3) {
+          let rest = value.slice(3); // numbers part
+          input.value = "BSF" + rest;
+        }
+      }
+    </script>
+
+    <script>
+      function capitalizeName() {
+        let input = document.getElementById("stdn");
+        let value = input.value.toLowerCase().trim();
+
+        let words = value.split(" ");
+        for (let i = 0; i < words.length; i++) {
+          if (words[i]) {
+            words[i] = words[i][0].toUpperCase() + words[i].slice(1);
+          }
+        }
+
+        input.value = words.join(" ");
+      }
+    </script>
+
+    <script>
+      function fixNumber() {
+        let input = document.getElementById("cnt");
+        let value = input.value.replace(/\D/g, ""); // sirf digits
+
+        if (value.length >= 2) {
+          value = "03" + value.slice(2); // first 2 digits replace
+        }
+
+        input.value = value;
+      }
+    </script>
+
+    <script>
+      function validatePassword() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm_password").value;
+        var errorMsg = document.getElementById("passError");
+
+        if (password !== confirmPassword) {
+          errorMsg.style.display = "block";
+          return false;
+        }
+        errorMsg.style.display = "none";
+        return true;
+      }
+    </script>
+  </body>
+</html>

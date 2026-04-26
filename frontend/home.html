@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>University Portal</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: white;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #2e6b3e;
+        padding: 10px 50px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        /* border-bottom: 3px solid #fecb00; */
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .logo img {
+        height: 55px;
+        width: 55px;
+        margin-right: 15px;
+        border: 2px solid white;
+        padding: 2px;
+        border-radius: 50%;
+        background-color: white;
+        object-fit: contain;
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 18px;
+        transition: 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        color: #fecb00;
+      }
+
+      .hero {
+        height: 85vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        animation: slideImages 15s infinite ease-in-out;
+      }
+
+      @keyframes slideImages {
+        0%,
+        30% {
+          background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("img.jpg");
+          background-size: cover;
+          background-position: center;
+        }
+        33%,
+        63% {
+          background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("img1.jpg");
+          background-size: cover;
+          background-position: center;
+        }
+        66%,
+        100% {
+          background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("img2.jpg");
+          background-size: cover;
+          background-position: center;
+        }
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        font-weight: 800;
+        margin-bottom: 25px;
+        color: white;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+      }
+
+      .btn-container {
+        display: flex;
+        gap: 15px;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background-color: #fecb00;
+        color: #2e6b3e;
+        border: none;
+      }
+
+      .btn-primary:hover {
+        background-color: white;
+        transform: scale(1.05);
+      }
+
+      .btn-secondary {
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+      }
+
+      .btn-secondary:hover {
+        background-color: white;
+        color: #2e6b3e;
+      }
+
+      .footer {
+        background-color: #2e6b3e;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        /* border-top: 3px solid #fecb00; */
+        font-size: 14px;
+        width: 100%;
+      }
+
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 10px 20px;
+        }
+        .nav-links {
+          display: block;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .hero h1 {
+          font-size: 32px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a
+          href="https://ue.edu.pk/"
+          target="_blank"
+          style="
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+          "
+        >
+          <img src="ue_logo.png" alt="UE Logo" />
+          UNIVERSITY OF EDUCATION LAHORE
+        </a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="std_signup.html" target="_blank">Student Signup</a></li>
+        <li><a href="std_login.html" target="_blank">Student Login</a></li>
+        <li>
+          <a href="supervisor_login.html" target="_blank">Supervisor Login</a>
+        </li>
+        <li><a href="admin_login.php" target="_blank">Admin Login</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <h1>Final Year Project Approval System</h1>
+
+      <div class="btn-container">
+        <a href="std_signup.html" target="_blank" class="btn btn-primary"
+          >Get Started</a
+        >
+        <a href="std_login.html" target="_blank" class="btn btn-secondary"
+          >Login</a
+        >
+      </div>
+    </section>
+
+    <div class="footer">
+      © Copyright 2026 All Rights Reserved | Developed by Numan Ali
+    </div>
+  </body>
+</html>

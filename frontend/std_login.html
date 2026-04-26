@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Login | UE Portal</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f4f7f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .std_login_container {
+        background: white;
+        width: 100%;
+        max-width: 420px;
+        padding: 35px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-top: 5px solid #2e6b3e;
+        text-align: center;
+      }
+
+      .std_login_container::before {
+        content: "";
+        display: block;
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 10px;
+        background: url("ue_logo.png") no-repeat center;
+        background-size: contain;
+        transition: transform 0.3s ease;
+      }
+
+      .std_login_container:hover::before {
+        transform: scale(1.1);
+      }
+
+      .std_login_container h2 {
+        color: #2e6b3e;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+      }
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        text-align: left;
+      }
+
+      .input-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+      }
+
+      .input-group input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        transition: border 0.3s;
+      }
+
+      .input-group input:focus {
+        border-color: #2e6b3e;
+      }
+
+      .options-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+
+      .error-msg {
+        display: none;
+        color: red;
+        font-size: 12px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .main-btn {
+        flex: 2;
+        background-color: #2e6b3e;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .main-btn:hover {
+        background-color: #1f4d2c;
+      }
+
+      .reset-btn {
+        flex: 1;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .links-section {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+      }
+
+      .links-section a {
+        color: #2e6b3e;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .links-section a:hover {
+        text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .action-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .dash-btn.logout {
+          grid-column: span 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="std_login_container">
+      <h2>Student Login</h2>
+      <form action="login.php" method="post" onsubmit="return validateLogin();">
+        <div class="input-group">
+          <label for="login_id">Student ID / Email</label>
+          <input
+            type="text"
+            id="login_id"
+            name="sid"
+            placeholder="e.g. BSF1234567"
+            required
+            pattern="^(BSF[0-9]{7}|[a-zA-Z0-9._%+-]+@gmail\.com)$"
+            title="Enter BSF1234567 or a valid Gmail address"
+            onblur="fixLoginInput()"
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="login_pass">Password</label>
+          <input
+            type="password"
+            name="pass"
+            id="login_pass"
+            placeholder="Enter Your Password"
+            required
+            minlength="8"
+            maxlength="12"
+          />
+        </div>
+
+        <div class="options-row">
+          <label>
+            <input type="checkbox" onclick="togglePassword()" /> Show Password
+          </label>
+          <label> <input type="checkbox" name="remember" /> Remember Me </label>
+        </div>
+
+        <div id="loginError" class="error-msg">
+          Please fill all fields correctly!
+        </div>
+
+        <div class="btn-group">
+          <input type="submit" value="Login" class="main-btn" />
+          <input type="reset" value="Reset" class="reset-btn" />
+        </div>
+      </form>
+
+      <div class="links-section">
+        <a href="forgot_password.html">Forgot Password?</a>
+        <p>New here? <a href="std_signup.html">Sign Up Here</a></p>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function fixLoginInput() {
+      let input = document.getElementById("login_id");
+      let value = input.value.trim();
+
+      if (value.includes("@")) {
+        if (value.includes("@gmail.com")) {
+          let parts = value.split("@gmail.com");
+          input.value = parts[0] + "@gmail.com";
+        }
+        return;
+      }
+
+      // If student id exist then fix BSF
+      if (value.length >= 3) {
+        let rest = value.slice(3);
+        input.value = "BSF" + rest;
+      }
+    }
+  </script>
+</html>
